@@ -21,8 +21,8 @@ logger.setLevel(level=logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
 
 str_time = time.strftime("%Y%m%d%H%M%S", time.localtime())
-log_file = str_time + ".log"
-error_file = str_time + ".err"
+log_file = "NKO" + str_time + ".log"
+error_file = "NKO" + str_time + ".err"
 
 fh = logging.FileHandler(log_file, encoding="utf-8", mode="a")  # fh : file handler
 fh.setLevel(logging.INFO)

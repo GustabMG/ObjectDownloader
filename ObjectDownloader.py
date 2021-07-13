@@ -233,7 +233,8 @@ def main(config_file, log_level):
                 statistics[bucket_name][2] += 1  # bucket_failed + 1
                 statistics['__All__'][0] += 1  # all + 1
                 statistics['__All__'][2] += 1  # all_failed + 1
-
+    logger.info(statistics)
+    print('-'*76)
     print('下载统计：')
     print('{:<24}{:<18}{:<18}{:<18}'.format('BucketName', 'TotalDownloaded', 'Successed', 'Failed'))
     for k, v in statistics.items():
@@ -241,8 +242,7 @@ def main(config_file, log_level):
             print('{:<24}{:<18}{:<18}{:<18}'.format(k, v[0], v[1], v[2]))
     print('{:<24}{:<18}{:<18}{:<18}'.format('Total', statistics['__All__'][0],
                                             statistics['__All__'][1], statistics['__All__'][2]))
-
-    logger.info(statistics)
+    print('-'*76)
     logger.info("程序已结束，日志请查看 log.txt 文件和 error.txt 文件。")
     logger.removeHandler(fh)
     logger.removeHandler(fh2)

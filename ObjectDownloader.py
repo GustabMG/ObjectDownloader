@@ -9,7 +9,6 @@
 
 
 import logging
-import demjson
 import os
 import configparser
 import time

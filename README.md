@@ -1,12 +1,12 @@
 # 赞存S3对象下载工具使用说明
-## 一、	功能简介
+## 一、    功能简介
 本工具可以根据配置文件中的配置连接赞存S3对象存储并将需要下载的对象文件批量下载到指定的目录。
 ## 二、	安装与运行
 赞存S3对象下载工具可以在Windows系统和Linux系统下运行，且都无需安装依赖。
 Windows下的赞存S3对象下载工具包含一个名为ObjectDownloader.exe的主程序和一个名为nkoconfig.ini的配置文件，请将这两个文件放置于非中文路径下，建议新建一个文件夹专门存放这两个文件以及之后会生成的日志文件。
 在nkoconfig.ini文件中做好相应的配置后，即可使用命令行工具（CMD、PowerShell或Windows Terminal）运行该程序了。
-将命令行工具切换到ObjectDownloader.exe所在的文件夹，使用命令.\ObjectDownloader.exe –help可以查看赞存S3对象下载工具的帮助信息，如下：
-···
+将命令行工具切换到ObjectDownloader.exe所在的文件夹，使用命令.\ObjectDownloader.exe –help可以查看赞存S3对象下载工具的帮助信息，如下图：
+```
 Usage: ObjectDownloader.py [OPTIONS]
 
   根据配置文件批量下载S3对象的简单小程序.
@@ -16,9 +16,8 @@ Options:
   -l, --log_level [critical|error|warning|info|debug]
                                   控制台的日志等级，默认为error。注：critical > error >
                                   warning > info > debug
-  --help                          Show this message and exit.
-
-···
+  --help  
+```
  
 使用 .\ ObjectDownloader.exe --config_file nkoconfig.ini --log_level error来运行程序；或使用简写.\ ObjectDownloader.exe -c nkoconfig.ini -l error，这两个命令是等价的。
 --config_file或-c参数后面可以使用不同的配置文件，以实现使用不同S3租户下载对象文件的要求。
@@ -39,7 +38,7 @@ Linux系统下的赞存S3对象下载工具使用方法与Windows下的赞存S3�
 对象文件在下载时会将Object ID中的“/”和“\”替换为“_”作为其文件名。
 
 下面是一个配置文件的例子：
-···
+```
 [config]
  access_key = H2XL9BBABCDD1C55B6GB
  secret_key = KQ2AUj0rEotOrlpCmKUAFPiPqVfjBdD2zhZpjeqJ
@@ -61,10 +60,11 @@ download_list = {
         EGXJ8V_06.25.2021_01.23/CV_MAGNETIC/V_411/CHUNKMAP_TRAILER_4729.FOLDER/0
 	"
     }
-···
+```
 
 ## 四、	日志记录
 赞存S3对象下载工具运行时会在当前工作目录生成NKO[Time].log和NKO[Time].err两个日志文件。Time的格式为年月日时分秒，如2021年7月12日15点37分03秒生成的日志文件就是NKO20210712153703.log和NKO20210712153703.err两个文件。
 其中NKO[Time].log中记录的是info及以上等级的日志，NKO[Time].err中记录的是error及以上等级的日志，请根据需求查看。
+
 
 

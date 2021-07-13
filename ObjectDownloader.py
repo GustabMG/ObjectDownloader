@@ -9,7 +9,7 @@
 
 
 import logging
-import json
+import demjson
 import os
 import configparser
 import time
@@ -136,7 +136,7 @@ class ReadConfig:
             config_path = file_path
         else:
             root_dir = os.path.dirname(os.path.abspath('.'))
-            config_path = os.path.join(root_dir, 'config.ini')  # 使用当前目录下的config.ini文件
+            config_path = os.path.join(root_dir, 'nkoconfig.ini')  # 使用当前目录下的nkoconfig.ini文件
         self.cf = configparser.ConfigParser()
         try:
             self.cf.read(config_path, encoding="utf-8")
@@ -163,8 +163,8 @@ class ReadConfig:
 
 
 @click.command()
-@click.option('--config_file', '-c', type=click.Path(exists=True), default='config.ini',
-              help='程序的配置文件，默认为当前目录下的config.ini文件')
+@click.option('--config_file', '-c', type=click.Path(exists=True), default='nkoconfig.ini',
+              help='程序的配置文件，默认为当前目录下的nkoconfig.ini文件')
 @click.option('--log_level', '-l', type=click.Choice(['critical', 'error', 'warning', 'info', 'debug']),
               default='error', help='控制台的日志等级，默认为error。注：critical > error > warning > info > debug')
 def main(config_file, log_level):
@@ -184,8 +184,12 @@ def main(config_file, log_level):
     download_dir = config.get_config('download_dir')
     sub_dir = config.get_config('sub_dir')
     download_list = config.get_download_list()
+    download_list = download_list.replace('\n', '').replace('\r', '')  # 去除换行,回车
+    # \r 代表回车，也就是打印头归位，回到某一行的开头。 \n代表换行，就是走纸，下一行。
+
     try:
-        download_list = json.loads(download_list)
+        download_list = eval(download_list)  # 转换为字典
+
     except Exception as e:
         logger.critical(e)
         logger.critical('请检查配置文件中download_list项')
@@ -218,7 +222,8 @@ def main(config_file, log_level):
         else:
             download_dir_full = os.path.abspath(download_dir)
             logger.info("未启用子目录，桶 %s 中所有文件都将下载到 %s 目录。" % (bucket_name, download_dir_full))
-        for object_id in download_list[bucket_name]:
+
+        for object_id in download_list[bucket_name].split(','):   # 以，分割称为列表
             if cephs3_boto3.download_file(download_dir_full, bucket_name, object_id):
                 statistics[bucket_name][0] += 1  # bucket_all + 1
                 statistics[bucket_name][1] += 1  # bucket_successed + 1
